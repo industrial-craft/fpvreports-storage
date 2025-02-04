@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FPV Report Success</title>
+    <link th:href="@{/css/style3.css}" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div th:if="${fpvReports.size() > 0}">
+        <form method="post" th:action="@{/submitToDeleteFPVReports}" th:object="${fpvReport}">
+            <div class="text-center">
+                <p>Welcome to FPV Reports List!</p>
+            </div>
+            <div class="fpv-details">
+                <div th:each="report : ${fpvReports}" class="report-item">
+                    <div class="report-checkbox">
+                        <input type="checkbox" name="ids" th:value="${report.fpvReportId}" />
+                    </div>
+                    <div class="report-details">
+                        <div class="report-field">
+                            <strong>ID:</strong> <span th:text="${report.fpvReportId}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Date and Time:</strong> <span th:text="${report.dateTimeFlight}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Coordinates MGRS:</strong> <span th:text="${report.coordinatesMGRS}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Additional Info:</strong> <span th:text="${report.additionalInfo}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Is On Target:</strong> <span th:text="${report.isOnTargetFPV}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Pilot Name:</strong> <span th:text="${report.fpvPilot?.name}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Pilot Surname:</strong> <span th:text="${report.fpvPilot?.surName}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-button">
+                <label for="submit-button">
+                    <button id="submit-button" type="submit">Delete FPV Reports</button>
+                </label>
+            </div>
+        </form>
+        </div>
+        <div th:if="${fpvReports.size() == 0}">
+            <p>No FPV Reports available!</p>
+            <!--<div class="button">
+                <label for="submit-button">
+                    <a th:href="@{/fpvReport/create}">
+                        <button type="button" id="create-btn">Add another FPVReport</button>
+                    </a>
+                </label>
+            </div>-->
+            <div class="submit-button">
+                <label for="submit-button">
+                    <a th:href="@{/fpvReport}">
+                        <button type="button" id="create-btn">Add another FPVReport</button>
+                    </a>
+                </label>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FPV Report Success</title>
+    <link th:href="@{/css/styleSearchFPVReportForm.css}" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <form method="post" th:action="@{/submitToSearchFPVReportForm}" th:object="${fpvReport}">
+            <div class="text-center">
+                <p>Welcome to search the FPV Report by ID!</p>
+            </div>
+            <div class="fpv-details">
+                <div class="input-box">
+                    <label class="details" for="id">Enter FPV Report ID:
+                        <input class="input-box-field" id="id" name="id" type="number"/>
+                    </label>
+                </div>
+            </div>
+            <div class="submit-button">
+                <label class="details" for="submit-button">
+                    <button type="submit" id="submit-button">Search</button>
+                </label>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

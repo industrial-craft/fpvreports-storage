@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Delete FPV Report Failure</title>
+    <link th:href="@{/css/styleFailure.css}" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="text-center">
+            <p th:text="${message}"></p>
+        </div>
+        <div class="submit-button">
+            <label for="submit-button">
+                <a th:href="@{/fpvReports}">
+                    <button type="button" id="submit-button">Back to Reports List</button>
+                </a>
+            </label>
+        </div>
+    </div>
+</body>
+</html>

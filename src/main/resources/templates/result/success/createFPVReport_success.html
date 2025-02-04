@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FPV Report Success</title>
+    <link th:href="@{/css/style2.css}" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="fpv-details">
+            <div class="input-box">
+                <span class="details">FPV Serial Number:</span>
+                <span class="input-box-field" th:text="${fpvReport.fpvDrone.fpvSerialNumber}"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">FPV Craft Name:</span>
+                <span class="input-box-field" th:text="${fpvReport.fpvDrone.fpvCraftName}"></span>
+            </div>
+
+            <div class="input-box">
+                <span class="details">FPV Model:</span>
+                <span class="input-box-field" th:text="${fpvReport.fpvDrone.fpvModel}"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">Date and Time:</span>
+                <span class="input-box-field" th:text="${fpvReport.dateTimeFlight}"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">FPV Pilot name:</span>
+                <span class="input-box-field" th:text="${fpvReport.fpvPilot.name}"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">FPV Pilot surname:</span>
+                <span class="input-box-field" th:text="${fpvReport.fpvPilot.surName}"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">Is Lost due to REB:</span>
+                <span class="input-box-field" th:text="${fpvReport.isLostFPVDueToREB} ? 'Is lost due to REB' : 'Another reason'"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">Is on target FPV:</span>
+                <span class="input-box-field" th:text="${fpvReport.isOnTargetFPV} ? 'Is on target' : 'Missed the target=('"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">Coordinates MGRS:</span>
+                <span class="input-box-field" th:text="${fpvReport.coordinatesMGRS}"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">FPV Additional Info:</span>
+                <span class="input-box-field" th:text="${fpvReport.additionalInfo}"></span>
+            </div>
+        </div>
+        <div class="submit-button">
+            <label for="submit-button">
+                <a th:href="@{/fpvReport}">
+                    <button type="button" id="submit-button">Add another FPVReport</button>
+                </a>
+            </label>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: url(../img/flag-00797_800.jpg) center no-repeat;
+  background-size: cover;
+}
+
+.container {
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+}
+
+form {
+  background: rgba(145, 92, 92, 0.3);
+  padding: 3em;
+  border-radius: 20px;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
+  transition: all 0.2s ease-in-out;
+}
+
+.container form .fpv-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 5px 0;
+  background: transparent;
+}
+
+.input-box {
+  margin: 0 auto;
+  width: calc(100% / 2 - 20px);
+}
+
+/*.input-box .input-box-field .details {
+  display: block;
+  font-weight: 500;
+}*/
+
+.input-box-field {
+  &:hover {
+    background: rgba(255,255,255,0.1);
+    box-shadow: 4px 4px 60px 8px rgba(0,0,0,0.2);
+  }
+}
+
+.submit-button {
+   margin: 0 auto;
+   width: calc(100% / 2 - 20px);
+   text-align: center;
+}
+
+.input-box-field, #submit-button {
+   height: 70%;
+   width: 100%;
+   padding: 1em;
+   margin: 10px 0;
+   font-size: 1rem;
+   background: transparent;
+   border: none;
+   border-left: 1px solid rgba(255,255,255,0.3);
+   border-top: 1px solid rgba(255,255,255,0.3);
+   border-radius: 10px;
+   backdrop-filter: blur(5px);
+   box-shadow: 4px 4px 60px rgba(0,0,0,0.2);
+   color: #fff;
+   font-family: Montserrat, sans-serif;
+   font-weight: 500;
+   transition: all 0.2s ease-in-out;
+   text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+#submit-button {
+   &:hover {
+     cursor: pointer;
+     background: rgba(255,255,255,0.1);
+     box-shadow: 4px 4px 60px 8px rgba(0,0,0,0.2);
+   }
+}
+.text-center {
+  text-align: center;
+}
+
+.validationError {
+  color: red;
+}

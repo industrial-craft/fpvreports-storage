@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FPV Report</title>
+    <link th:href="@{/css/style1.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <form method="post" th:action="@{/submitToCreateFPVReportForm}" th:object="${fpvReport}">
+        <div class="text-center">
+            <p>Welcome to FPV Report!</p>
+        </div>
+        <div class="fpv-details">
+            <div class="input-box">
+                <label class="details" for="fpvDrone.fpvSerialNumber">FPV Serial Number:
+                    <input class="input-box-field" id="fpvDrone.fpvSerialNumber" th:field="*{fpvDrone.fpvSerialNumber}" type="text" placeholder="DERUN 24085999"/>
+                    <span class="validationError"
+                          th:if="${#fields.hasErrors('fpvDrone.fpvSerialNumber')}"
+                          th:errors="*{fpvDrone.fpvSerialNumber}">FPV Serial Number Error</span>
+                </label>
+            </div>
+            <div class="input-box">
+                <label class="details" for="fpvDrone.fpvCraftName">FPV Craft Name:
+                    <input class="input-box-field" id="fpvDrone.fpvCraftName" th:field="*{fpvDrone.fpvCraftName}" type="text" placeholder="DERUN"/>
+                    <span class="validationError"
+                          th:if="${#fields.hasErrors('fpvDrone.fpvCraftName')}"
+                          th:errors="*{fpvDrone.fpvCraftName}">FPV Serial Number Error</span>
+                </label>
+            </div>
+            <div class="input-box">
+                <label class="details" for="fpvDrone.fpvModel">FPV Model:
+                    <select class="input-box-field" id="fpvDrone.fpvModel" th:field="*{fpvDrone.fpvModel}">
+                        <option value="" disabled selected>Please select a model</option>
+                        <option th:each="fpvModel : ${T(com.rade.protect.model.request.FPVDrone.FPVModel).values()}"
+                                th:value="${fpvModel}" th:text="${fpvModel}"></option>
+                    </select>
+                    <span class="validationError"
+                          th:if="${#fields.hasErrors('fpvDrone.fpvModel')}"
+                          th:errors="*{fpvDrone.fpvModel}">FPV Model Error</span>
+                </label>
+            </div>
+            <div class="input-box">
+                <label class="details" for="dateTimeFlight">Date and Time:
+                    <input class="input-box-field" id="dateTimeFlight" type="datetime-local" th:field="*{dateTimeFlight}" placeholder="14-10-2024 18:30"/>
+                    <span class="validationError"
+                          th:if="${#fields.hasErrors('dateTimeFlight')}"
+                          th:errors="*{dateTimeFlight}">Date and Time Flight Error</span>
+                </label>
+            </div>
+            <div class="input-box">
+                <label class="details" for="fpvPilot.name">FPV Pilot name:
+                    <input class="input-box-field" id="fpvPilot.name" type="text" th:field="*{fpvPilot.name}" placeholder="John"/>
+                    <span class="validationError"
+                          th:if="${#fields.hasErrors('fpvPilot.name')}"
+                          th:errors="*{fpvPilot.name}">FPV Pilot Name Error</span>
+                </label>
+            </div>
+            <div class="input-box">
+                <label class="details" for="fpvPilot.surName">FPV Pilot surname:
+                    <input class="input-box-field" id="fpvPilot.surName" type="text" th:field="*{fpvPilot.surName}" placeholder="Wick"/>
+                    <span class="validationError"
+                          th:if="${#fields.hasErrors('fpvPilot.surName')}"
+                          th:errors="*{fpvPilot.surName}">FPV Pilot Surname Error</span>
+                </label>
+            </div>
+            <div class="input-box">
+                <label class="details" for="isLostFPVDueToREB">Is lost due to REB?
+                    <input type="checkbox" id="isLostFPVDueToREB" th:field="*{isLostFPVDueToREB}"/>
+                </label>
+            </div>
+            <div class="input-box">
+                <label class="details" for="isOnTargetFPV">Is on target?
+                    <input type="checkbox" id="isOnTargetFPV" th:field="*{isOnTargetFPV}"/>
+                </label>
+            </div>
+            <div class="input-box">
+                <label class="details" for="coordinatesMGRS">Coordinates MGRS:
+                    <input class="input-box-field" id="coordinatesMGRS" type="text" th:field="*{coordinatesMGRS}" placeholder="37U DP 1450379564"/>
+                    <span class="validationError"
+                          th:if="${#fields.hasErrors('coordinatesMGRS')}"
+                          th:errors="*{coordinatesMGRS}">Coordinates MGRS Error</span>
+                </label>
+            </div>
+            <div class="input-box">
+                <label class="details" for="additionalInfo">Additional info:
+                    <input class="input-box-field" id="additionalInfo" type="text" th:field="*{additionalInfo}" placeholder="h=181"/>
+                    <span class="validationError"
+                          th:if="${#fields.hasErrors('additionalInfo')}"
+                          th:errors="*{additionalInfo}">Additional Info Error</span>
+                </label>
+            </div>
+        </div>
+        <div class="button">
+            <label for="submit-button">
+                <input id="submit-button" type="submit" value="Create FPV Report"/>
+            </label>
+        </div>
+    </form>
+</div>
+</body>
+</html>

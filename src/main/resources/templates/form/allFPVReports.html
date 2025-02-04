@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FPV Report Success</title>
+    <link th:href="@{/css/allFPVReportsStyle.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+</head>
+<body>
+    <div class="container">
+        <div th:if="${fpvReports.size() > 0}">
+        <form method="get" th:action="@{/fpvReports/sort}" th:object="${fpvReport}" id="sortFilterForm">
+            <div class="text-center">
+                <p>Welcome to FPV Reports List!</p>
+            </div>
+            <div class="fpv-details">
+                <div th:each="report : ${fpvReports}" class="report-item">
+<!--                    <div class="report-checkbox">
+                        <input type="checkbox" name="ids" th:value="${report.fpvReportId}" />
+                    </div>-->
+                    <div class="report-details">
+                        <div class="report-field">
+                            <strong>ID:</strong> <span th:text="${report.fpvReportId}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Date and Time:</strong> <span th:text="${report.dateTimeFlight}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>FPV Model:</strong> <span th:text="${report.fpvDrone?.fpvModel}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Coordinates MGRS:</strong> <span th:text="${report.coordinatesMGRS}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Additional Info:</strong> <span th:text="${report.additionalInfo}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Is On Target:</strong> <span th:text="${report.isOnTargetFPV}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Is Lost Due To REB:</strong> <span th:text="${report.isLostFPVDueToREB}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Pilot Name:</strong> <span th:text="${report.fpvPilot?.name}"></span>
+                        </div>
+                        <div class="report-field">
+                            <strong>Pilot Surname:</strong> <span th:text="${report.fpvPilot?.surName}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <label class="details" for="sortCriteria">Sort by:</label>
+                <select class="input-box-field" id="sortCriteria" th:name="sortCriteria" onchange="toggleFilterOptions()">
+                    <option value="">Select:</option>
+                    <option value="dateTimeFlight">Date</option>
+                    <option value="fpvPilotName">Pilot Name</option>
+                    <option value="fpvPilotSurName">Pilot Surname</option>
+                    <option value="fpvModel">FPV Model</option>
+                    <option value="isLostFPVDueToREB">Is Lost Due To Reb?</option>
+                    <option value="isOnTargetFPV">Is On target FPV?</option>
+                </select>
+            </div>
+
+            <div class="input-box" id="modelSelectSection" style="display: none;">
+                <label for="fpvModel">Choose FPV Model:</label>
+                <select id="fpvModel" th:name="fpvModel">
+                    <option value="" disabled selected>Please, select!</option>
+                    <option value="KAMIKAZE">KAMIKAZE</option>
+                    <option value="BOMBER">BOMBER</option>
+                    <option value="PPO">PPO</option>
+                </select>
+            </div>
+
+            <div class="input-box" id="rebFilter" style="display: none;">
+                <label for="isLostFPVDueToREB">Is lost due to REB:</label>
+                <select id="isLostFPVDueToREB" th:name="isLostFPVDueToREB" disabled>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+
+            <div class="input-box" id="isOnTargetFPVFilter" style="display: none;">
+                <label for="isOnTargetFPV">Is lost due to REB:</label>
+                <select id="isOnTargetFPV" th:name="isOnTargetFPV" disabled>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+
+            <div class="button">
+                <label for="submit-btn">
+                        <button type="submit" id="submit-btn">Sort</button>
+                </label>
+            </div>
+        </form>
+        </div>
+        <div th:if="${fpvReports.size() == 0}">
+            <div class="text-center">
+                <p>No FPV Reports available!</p>
+            </div>
+            <div class="btn-wrap">
+                <div class="button">
+                    <label for="back-btn">
+                        <a th:href="@{/fpvReports/sort}">
+                            <button type="button" id="back-btn">Back to FPV Reports</button>
+                        </a>
+                    </label>
+                </div>
+                <div class="button">
+                    <label for="create-btn">
+                        <a th:href="@{/fpvReport}">
+                            <button type="button" id="create-btn">Add another FPVReport</button>
+                        </a>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  /*background: url(../img/flag-00797_800.jpg) center no-repeat;
+  background-size: cover;*/
+  background-image: linear-gradient(45deg, rgb(157, 198, 107) 5%, rgb(79, 164, 154) 30%, rgb(67, 97, 194));
+  background-size: auto, cover, cover;
+}
+
+.container {
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+}
+
+form {
+  background: rgba(145, 92, 92, 0.3);
+  padding: 3em;
+  border-radius: 20px;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
+  transition: all 0.2s ease-in-out;
+}
+
+.container form .fpv-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 5px 0;
+  background: transparent;
+}
+
+form .fpv-details .input-box {
+  margin: 15px 0;
+  width: calc(100% / 2 - 20px);
+}
+.input-box .input-box-field .details {
+  display: block;
+  font-weight: 500;
+}
+
+.fpv-details .input-box .input-box-field {
+  height: 70%;
+  width: 100%;
+  padding: 0.5em;
+  margin: 5px 0;
+
+  &:hover {
+    background: rgba(255,255,255,0.1);
+    box-shadow: 4px 4px 60px 8px rgba(0,0,0,0.2);
+  }
+}
+
+input, select {
+  border: none;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-radius: 5000px;
+  box-shadow: 4px 4px 60px rgba(0,0,0,0.2);
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.2s ease-in-out;
+}
+
+form .button {
+   margin: 0 auto;
+   width: calc(100% / 2 - 20px);
+   text-align: center;
+}
+
+form .button input {
+   height: 70%;
+   width: 50%;
+   padding: 1em;
+   margin: 10px 0;
+   font-size: 1rem;
+
+   &:hover {
+     cursor: pointer;
+     background: rgba(255,255,255,0.1);
+     box-shadow: 4px 4px 60px 8px rgba(0,0,0,0.2);
+   }
+
+   &:active {
+     background: rgba(255,255,255,0.2);
+   }
+}
+
+::placeholder, #submit-button, #dateTimeFlight {
+  font-family: Montserrat, sans-serif;
+  font-weight: 400;
+  color: #754444;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+}
+
+/*select option {
+  color: #754444 !important;
+  background-color: rgba(255,255,255,0.2);
+}
+
+select:focus option {
+  color: #754444;
+}*/
+
+.text-center {
+  text-align: center;
+}
+
+.validationError {
+  color: red;
+}

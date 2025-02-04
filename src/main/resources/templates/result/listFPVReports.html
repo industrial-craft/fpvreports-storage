@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FPV Report Success</title>
+    <link th:href="@{/css/style2.css}" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date and Time</th>
+                <th>Coordinates MGRS</th>
+                <th>Pilot Name</th>
+                <th>Pilot Surname</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="report : ${fpvReports}">
+                <td th:text="${report.fpvReportId}"></td>
+                <td th:text="${report.dateTimeFlight}"></td>
+                <td th:text="${report.coordinatesMGRS}"></td>
+                <td th:text="${report.fpvPilot?.name}"></td>
+                <td th:text="${report.fpvPilot?.surName}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
