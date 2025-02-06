@@ -1,28 +1,20 @@
 package com.rade.protect.api;
 
-import com.rade.protect.model.request.FPVReport;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-
 @Slf4j
 public class FPVReportSuccessFlowTest extends FPVReportRestControllerTest {
 
-    /*
-     * GET /api/v1/fpvreports
-     */
-
-    @Test
-    public void shouldReturnTheListOfFpvReportsRestAPI() throws Exception {
-        givenFPVReportRestServiceGetAllFPVReportsReturnsListOfFPVReports();
-        whenFindAllFpvReports();
-        thenExpectResponseHasOkStatus();
-        thenExpectFpvReportServiceFindAllFpvReportsCalledOnce();
-        thenExpectResponseWithFPVReports();
+    @BeforeEach
+    void setUp() throws Exception {
+        givenValidCreatedFpvReport();
+        givenFPVReportRestServiceCreateFPVReport();
+        whenCreateFpvReportAPICalled();
+        thenExpectResponseHasCreatedStatus();
     }
 
     /*
@@ -32,10 +24,10 @@ public class FPVReportSuccessFlowTest extends FPVReportRestControllerTest {
     @ParameterizedTest
     @ValueSource(longs = {1})
     public void shouldReturnTheOneFpvReportRestAPI(Long id) throws Exception {
-        givenValidCreateFpvReport();
+        givenFPVReportRestServiceFindFpvReportById(id);
         whenFindOneFpvReport(id);
         thenExpectResponseHasOkStatus();
-        thenExpectResponseWithOneFPVReport();
+        thenExpectResponseWithOneCreatedFpvReport();
     }
 
     /*
@@ -44,10 +36,39 @@ public class FPVReportSuccessFlowTest extends FPVReportRestControllerTest {
 
     @Test
     public void shouldCreateFpvReportCallingRestAPI() throws Exception {
-        givenValidCreateFpvReport();
-        whenCreateFpvReportAPICalled();
-        thenExpectResponseHasCreatedStatus();
         thenExpectFpvReportServiceCreateFpvReportCalledOnce();
-        thenExpectResponseWithOneFPVReport();
+        thenExpectResponseWithOneCreatedFpvReport();
     }
+
+    /*
+     * PUT /api/v1/fpvreports/{id}
+     */
+
+    @ParameterizedTest
+    @ValueSource(longs = {1L})
+    public void shouldUpdateFpvReportCallingRestAPI(Long id) throws Exception {
+        givenFPVReportRestServiceUpdateFpvReport(id);
+        whenUpdatedFpvReportAPICalled(id);
+        thenExpectResponseHasOkStatus();
+        thenExpectResponseWithOneUpdatedFpvReport();
+    }
+
+    /*
+     * DELETE /api/v1/fpvreports/{id}
+     */
+
+    @ParameterizedTest
+    @ValueSource(longs = {1L})
+    public void shouldDeleteFpvReportCallingRestAPI(Long id) throws Exception {
+        givenFPVReportRestServiceDeleteFpvReportById(id);
+        givenFPVReportRestServiceFindFpvReportById(id);
+        whenDeleteFpvReportAPICalled(id);
+        thenExpectResponseHasOkStatus();
+        thenExpectFpvReportServiceDeleteFpvReportCalledOnce(id);
+
+        givenFPVReportRestServiceFindByIdReturnsNotFound(id);
+        whenFindOneFpvReport(id);
+        thenExpectResponseNotFoundStatus();
+    }
+
 }

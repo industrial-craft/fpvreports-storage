@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -55,9 +56,9 @@ public class FPVReportController {
     @PostMapping("/submitToSearchFPVReportForm")
     public String getFPVReportById(@RequestParam(name = "id") Long id, Model model) {
         log.info("Searching for report with id: {}", id);
-        FPVReport fpvReport = fpvReportRestService.findById(id);
+        Optional<FPVReport> fpvReport = fpvReportRestService.findById(id);
 
-        if (fpvReport != null) {
+        if (fpvReport.isPresent()) {
             model.addAttribute("fpvReport", fpvReport);
             model.addAttribute("message", "FPV Report with ID " + id + " is found!");
             return "result/success/viewFPVReport_success";
@@ -108,7 +109,7 @@ public class FPVReportController {
     @PostMapping("/submitToDeleteFPVReports")
     public String deleteFPVReportsByIds(@RequestParam(name = "ids", required = false) List<Long> ids, Model model) {
         if (ids != null && !ids.isEmpty()) {
-            fpvReportRestService.deleteAllById(ids);
+            fpvReportRestService.deleteAllByIds(ids);
             model.addAttribute("message", "Selected FPV Reports were deleted successfully!");
         } else {
             model.addAttribute("message", "No FPV Reports selected for deletion!");

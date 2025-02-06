@@ -20,14 +20,9 @@ public class FPVReportRestService {
     @Autowired
     private FPVReportRepository fpvReportRepository;
 
-    public FPVReport findById(Long id) {
-        Optional<FPVReport> fpvReport = fpvReportRepository.findById(id);
-
-        if (fpvReport.isPresent()) {
-            return fpvReport.get();
-        } else {
-            throw new FPVReportNotFoundException("FPV Report with id - " + id + " is not found!");
-        }
+    public Optional<FPVReport> findById(Long id) {
+        return Optional.ofNullable(fpvReportRepository.findById(id)
+                .orElseThrow(() -> new FPVReportNotFoundException("FPV Report with id - " + id + " is not found!")));
     }
 
     public boolean existsById(Long id) {
@@ -41,7 +36,7 @@ public class FPVReportRestService {
     }
 
     public FPVReport save(FPVReport fpvReport) {
-
+        log.info("Saving fpvReport...");
         FPVDrone fpvDrone = FPVDrone.builder()
                 .fpvSerialNumber(fpvReport.getFpvDrone().getFpvSerialNumber())
                 .fpvCraftName(fpvReport.getFpvDrone().getFpvCraftName())
@@ -97,7 +92,7 @@ public class FPVReportRestService {
 
     }
 
-    public void deleteAllById(List<Long> ids) {
+    public void deleteAllByIds(List<Long> ids) {
         List<Long> filteredIds = ids.stream()
                 .distinct()
                 .toList();

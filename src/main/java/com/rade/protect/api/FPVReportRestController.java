@@ -1,9 +1,9 @@
 package com.rade.protect.api;
 
+import com.rade.protect.api.validation.exception.FPVReportNotFoundException;
 import com.rade.protect.api.validation.fpvserialnumber.UniqueFpvSerialNumber;
 import com.rade.protect.model.request.FPVReport;
 import com.rade.protect.model.request.FPVReportIds;
-import com.rade.protect.model.response.FPVReportResponse;
 import com.rade.protect.service.FPVReportRestService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +27,18 @@ public class FPVReportRestController {
     private FPVReportRestService fpvReportRestService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<FPVReport> findByIdFpvReport(@PathVariable Long id) {
-        FPVReport fpvReport = fpvReportRestService.findById(id);
+    public ResponseEntity<?> findByIdFpvReport(@PathVariable Long id) {
+/*        try {
+            FPVReport fpvReport = fpvReportRestService.findById(id)
+                    .orElseThrow(() -> new FPVReportNotFoundException("FPV Report with id - " + id + " is not found!"));
+            return ResponseEntity.ok(fpvReport);
+        } catch (FPVReportNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppError(HttpStatus.NOT_FOUND.value(), "FPV Report with id - " + id + " is not found!"));
+        }*/
+        FPVReport fpvReport = fpvReportRestService.findById(id)
+                .orElseThrow(() -> new FPVReportNotFoundException("FPV Report with id - " + id + " is not found!"));
         return ResponseEntity.ok(fpvReport);
+
     }
 
     @GetMapping
@@ -57,23 +66,14 @@ public class FPVReportRestController {
         return ResponseEntity.created(location).body(savedFpvReport);
     }
 
-    private FPVReportResponse mapToResponse(FPVReport fpvReport) {
-        return FPVReportResponse.builder()
-                .fpvReportId(fpvReport.getFpvReportId())  // Переконайтеся, що ID тут є
-                .fpvDrone(fpvReport.getFpvDrone())
-                .dateTimeFlight(fpvReport.getDateTimeFlight())
-                .fpvPilot(fpvReport.getFpvPilot())
-                .isLostFPVDueToREB(fpvReport.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReport.getIsOnTargetFPV())
-                .coordinatesMGRS(fpvReport.getCoordinatesMGRS())
-                .additionalInfo(fpvReport.getAdditionalInfo())
-                .build();
-    }
-
     @PutMapping("/{id}")
-    ResponseEntity<FPVReport> updateFPVReport(@Valid @RequestBody FPVReport fpvReport, @PathVariable Long id) {
-        FPVReport updateFPVReport = fpvReportRestService.updateFPVReport(id, fpvReport);
-        return ResponseEntity.ok(updateFPVReport);
+    ResponseEntity<?> updateFPVReport(@Valid @RequestBody FPVReport fpvReport, @PathVariable Long id) {
+        FPVReport updatedFPVReport = fpvReportRestService.updateFPVReport(id, fpvReport);
+        if (updatedFPVReport == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new AppError(HttpStatus.NOT_FOUND.value(), "FPV Report with id - " + id + " is not found!"));
+        }
+        return ResponseEntity.ok(updatedFPVReport);
     }
 
     @DeleteMapping("/{id}")
@@ -85,7 +85,11 @@ public class FPVReportRestController {
     @DeleteMapping
     public ResponseEntity<?> deleteFPVReports(@Valid @RequestBody FPVReportIds fpvReportIds) {
         List<Long> ids = fpvReportIds.getFpvReportIds();
-        fpvReportRestService.deleteAllById(ids);
+        if (ids == null || ids.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new AppError(HttpStatus.BAD_REQUEST.value(), "No FPVReport IDs provided!"));
+        }
+        fpvReportRestService.deleteAllByIds(ids);
         return ResponseEntity.status(HttpStatus.OK).body(new AppError(HttpStatus.OK.value(), "FPVReports with IDs: " + ids + " are successfully deleted!"));
     }
 
