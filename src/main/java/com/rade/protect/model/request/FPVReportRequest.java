@@ -34,6 +34,7 @@ public class FPVReportRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateTimeFlight;
 
+    @Valid
     @NotNull(message = "FPVPilot object can't be null!")
     private FPVPilotRequest fpvPilot;
 
