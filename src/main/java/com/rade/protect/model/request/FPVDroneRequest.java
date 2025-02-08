@@ -15,7 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Valid
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 public class FPVDroneRequest {
 
     @NotBlank(message = "FPV Serial Number is required!")
-    @UniqueFpvSerialNumber
     private String fpvSerialNumber;
 
     @NotBlank(message = "FPV Craft Name is required!")

@@ -11,12 +11,6 @@ public class UniqueFpvSerialNumberValidator implements ConstraintValidator<Uniqu
 
     private final FPVReportRepository fpvReportRepository;
 
-/*    @Override
-    public boolean isValid(FPVReport fpvReport, ConstraintValidatorContext context) {
-        if (fpvReport == null) return true;
-        return fpvReportRepository.findAllByFpvDrone_FpvSerialNumber(fpvReport.getFpvDrone().getFpvSerialNumber()).isEmpty();
-    }*/
-
     @Override
     public boolean isValid(FPVReportRequest fpvReport, ConstraintValidatorContext context) {
         if (fpvReport == null || fpvReport.getFpvDrone() == null || fpvReport.getFpvDrone().getFpvSerialNumber() == null) {

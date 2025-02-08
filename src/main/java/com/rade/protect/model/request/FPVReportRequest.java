@@ -3,10 +3,9 @@ package com.rade.protect.model.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.rade.protect.api.validation.fpvserialnumber.UniqueFpvSerialNumber;
 import com.rade.protect.api.validation.localdatetime.LocalDateTimeCustomDeserializer;
 import com.rade.protect.api.validation.localdatetime.LocalDateTimeCustomSerializer;
-import com.rade.protect.model.entity.FPVDrone;
-import com.rade.protect.model.entity.FPVPilot;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,13 +17,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
-@Valid
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class FPVReportRequest {
 
+    @Valid
     @NotNull(message = "FPVDrone object can't be null!")
     private FPVDroneRequest fpvDrone;
 
