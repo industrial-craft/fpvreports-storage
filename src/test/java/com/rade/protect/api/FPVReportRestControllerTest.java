@@ -4,12 +4,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
-import com.rade.protect.model.request.FPVDrone;
-import com.rade.protect.model.request.FPVPilot;
-import com.rade.protect.model.request.FPVReport;
-import com.rade.protect.model.request.FPVReportIds;
+import com.rade.protect.model.entity.FPVDrone;
+import com.rade.protect.model.entity.FPVPilot;
+import com.rade.protect.model.entity.FPVReport;
+import com.rade.protect.model.request.*;
+import com.rade.protect.model.response.FPVDroneResponse;
+import com.rade.protect.model.response.FPVPilotResponse;
 import com.rade.protect.model.response.FPVReportResponse;
-import com.rade.protect.service.FPVReportRestService;
+import com.rade.protect.service.impl.FPVDroneServiceImpl;
+import com.rade.protect.service.impl.FPVPilotServiceImpl;
+import com.rade.protect.service.impl.FPVReportServiceImpl;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
@@ -54,17 +58,33 @@ class FPVReportRestControllerTest {
     protected MockMvc mockMvc;
 
     @MockBean
-    private FPVReportRestService fpvReportRestService;
+    private FPVReportServiceImpl fpvReportServiceImpl;
+
+    @MockBean
+    private FPVDroneServiceImpl fpvDroneService;
+
+    @MockBean
+    private FPVPilotServiceImpl fpvPilotService;
 
     protected MockHttpServletResponse response;
 
     protected FPVReport fpvReport;
 
-    protected FPVReport fpvReport1;
+    protected FPVReportRequest fpvReportRequest;
+
+    protected FPVReportRequest fpvReportRequest1;
 
     protected FPVReportResponse fpvReportResponse;
 
     protected FPVReportResponse fpvReportResponse1;
+
+    protected FPVDroneResponse fpvDroneResponse;
+
+    protected FPVDroneResponse fpvDroneResponse1;
+
+    protected FPVPilotResponse fpvPilotResponse;
+
+    protected FPVPilotResponse fpvPilotResponse1;
 
     protected FPVReportIds fpvReportIds;
 
@@ -79,19 +99,19 @@ class FPVReportRestControllerTest {
      */
 
     protected void givenValidCreatedFpvReport() {
-        FPVDrone fpvDrone = FPVDrone.builder()
+        FPVDroneRequest fpvDroneRequest = FPVDroneRequest.builder()
                 .fpvSerialNumber("SN743")
                 .fpvCraftName("Trainspotting")
                 .fpvModel(FPVDrone.FPVModel.KAMIKAZE)
                 .build();
-        FPVPilot fpvPilot = FPVPilot.builder()
+
+        FPVPilotRequest fpvPilot = FPVPilotRequest.builder()
                 .name("Mark")
                 .lastName("Renton")
                 .build();
 
-        fpvReport = FPVReport.builder()
-                .fpvReportId(1L)
-                .fpvDrone(fpvDrone)
+        fpvReportRequest = FPVReportRequest.builder()
+                .fpvDrone(fpvDroneRequest)
                 .dateTimeFlight(LocalDateTime.of(2025, 2, 3, 19, 0))
                 .fpvPilot(fpvPilot)
                 .isLostFPVDueToREB(false)
@@ -100,43 +120,53 @@ class FPVReportRestControllerTest {
                 .additionalInfo("h: 243")
                 .build();
 
+        fpvDroneResponse = FPVDroneResponse.builder()
+                .fpvSerialNumber(fpvReportRequest.getFpvDrone().getFpvSerialNumber())
+                .fpvCraftName(fpvReportRequest.getFpvDrone().getFpvCraftName())
+                .fpvModel(fpvReportRequest.getFpvDrone().getFpvModel())
+                .build();
+
+        fpvPilotResponse = FPVPilotResponse.builder()
+                .name(fpvReportRequest.getFpvPilot().getName())
+                .lastName(fpvReportRequest.getFpvPilot().getLastName())
+                .build();
+
         fpvReportResponse = FPVReportResponse.builder()
-                .fpvReportId(fpvReport.getFpvReportId())
-                .fpvDrone(fpvDrone)
-                .dateTimeFlight(fpvReport.getDateTimeFlight())
-                .fpvPilot(fpvPilot)
-                .isLostFPVDueToREB(fpvReport.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReport.getIsOnTargetFPV())
-                .coordinatesMGRS(fpvReport.getCoordinatesMGRS())
-                .additionalInfo(fpvReport.getAdditionalInfo())
+                .fpvReportId(1L)
+                .fpvDrone(fpvDroneResponse)
+                .dateTimeFlight(fpvReportRequest.getDateTimeFlight())
+                .fpvPilot(fpvPilotResponse)
+                .isLostFPVDueToREB(fpvReportRequest.getIsLostFPVDueToREB())
+                .isOnTargetFPV(fpvReportRequest.getIsOnTargetFPV())
+                .coordinatesMGRS(fpvReportRequest.getCoordinatesMGRS())
+                .additionalInfo(fpvReportRequest.getAdditionalInfo())
                 .build();
     }
 
     protected void givenValidCreatedFpvReports() {
-        fpvReport = getFpvReport();
-        fpvReport1 = getFpvReport1();
+        fpvReportRequest = getFpvReportRequest();
+        fpvReportRequest1 = getFpvReportRequest1();
 
-        doReturn(fpvReport).when(fpvReportRestService).save(any(FPVReport.class));
-        doReturn(fpvReport1).when(fpvReportRestService).save(any(FPVReport.class));
+        doReturn(fpvReportResponse).when(fpvReportServiceImpl).save(any(FPVReportRequest.class));
+        doReturn(fpvReportResponse1).when(fpvReportServiceImpl).save(any(FPVReportRequest.class));
     }
 
-    protected FPVReport getFpvReport() {
-        FPVDrone fpvDrone = FPVDrone.builder()
+    protected FPVReportRequest getFpvReportRequest() {
+        FPVDroneRequest fpvDroneRequest = FPVDroneRequest.builder()
                 .fpvSerialNumber("SN743")
                 .fpvCraftName("Trainspotting")
                 .fpvModel(FPVDrone.FPVModel.KAMIKAZE)
                 .build();
 
-        FPVPilot fpvPilot = FPVPilot.builder()
+        FPVPilotRequest fpvPilotRequest = FPVPilotRequest.builder()
                 .name("Mark")
                 .lastName("Renton")
                 .build();
 
-        return FPVReport.builder()
-                .fpvReportId(1L)
-                .fpvDrone(fpvDrone)
+        return FPVReportRequest.builder()
+                .fpvDrone(fpvDroneRequest)
                 .dateTimeFlight(LocalDateTime.of(2025, 2, 3, 19, 0))
-                .fpvPilot(fpvPilot)
+                .fpvPilot(fpvPilotRequest)
                 .isLostFPVDueToREB(false)
                 .isOnTargetFPV(true)
                 .coordinatesMGRS("37U DP 14256 82649")
@@ -144,23 +174,22 @@ class FPVReportRestControllerTest {
                 .build();
     }
 
-    protected FPVReport getFpvReport1() {
-        FPVDrone fpvDrone1 = FPVDrone.builder()
+    protected FPVReportRequest getFpvReportRequest1() {
+        FPVDroneRequest fpvDroneRequest1 = FPVDroneRequest.builder()
                 .fpvSerialNumber("SN7564")
                 .fpvCraftName("Kolibri")
                 .fpvModel(FPVDrone.FPVModel.BOMBER)
                 .build();
 
-        FPVPilot fpvPilot1 = FPVPilot.builder()
+        FPVPilotRequest fpvPilotRequest1 = FPVPilotRequest.builder()
                 .name("Austin")
                 .lastName("Powers")
                 .build();
 
-        return FPVReport.builder()
-                .fpvReportId(2L)
-                .fpvDrone(fpvDrone1)
+        return FPVReportRequest.builder()
+                .fpvDrone(fpvDroneRequest1)
                 .dateTimeFlight(LocalDateTime.of(2025, 2, 3, 20, 0))
-                .fpvPilot(fpvPilot1)
+                .fpvPilot(fpvPilotRequest1)
                 .isLostFPVDueToREB(true)
                 .isOnTargetFPV(true)
                 .coordinatesMGRS("37U DP 12621 83048")
@@ -169,73 +198,106 @@ class FPVReportRestControllerTest {
     }
 
     protected void givenFPVReportRestServiceFindFpvReportById(Long id) {
-        doReturn(Optional.of(fpvReport)).when(fpvReportRestService).findById(id);
+        doReturn(Optional.of(fpvReportResponse)).when(fpvReportServiceImpl).findById(id);
     }
 
     protected void givenFPVReportRestServiceFindByIdReturnsNotFound(Long id) {
-        doReturn(Optional.empty()).when(fpvReportRestService).findById(id);
+        doReturn(Optional.empty()).when(fpvReportServiceImpl).findById(id);
     }
 
-    protected void givenFPVReportRestServiceCreateFPVReport() {
-        doReturn(fpvReport).when(fpvReportRestService).save(any(FPVReport.class));
+    protected void givenFPVReportServiceImplSave() {
+        doReturn(fpvReportResponse).when(fpvReportServiceImpl).save(any(FPVReportRequest.class));
     }
 
     protected void givenFPVReportRestServiceGetAllFPVReportsReturnsListOfFPVReports() {
+
+        fpvDroneResponse = FPVDroneResponse.builder()
+                .fpvSerialNumber(fpvReportRequest.getFpvDrone().getFpvSerialNumber())
+                .fpvCraftName(fpvReportRequest.getFpvDrone().getFpvCraftName())
+                .fpvModel(fpvReportRequest.getFpvDrone().getFpvModel())
+                .build();
+
+        fpvPilotResponse = FPVPilotResponse.builder()
+                .name(fpvReportRequest.getFpvPilot().getName())
+                .lastName(fpvReportRequest.getFpvPilot().getLastName())
+                .build();
+
+        fpvDroneResponse1 = FPVDroneResponse.builder()
+                .fpvSerialNumber(fpvReportRequest1.getFpvDrone().getFpvSerialNumber())
+                .fpvCraftName(fpvReportRequest1.getFpvDrone().getFpvCraftName())
+                .fpvModel(fpvReportRequest1.getFpvDrone().getFpvModel())
+                .build();
+
+        fpvPilotResponse1 = FPVPilotResponse.builder()
+                .name(fpvReportRequest1.getFpvPilot().getName())
+                .lastName(fpvReportRequest1.getFpvPilot().getLastName())
+                .build();
+
         fpvReportResponse = FPVReportResponse.builder()
-                .fpvReportId(fpvReport.getFpvReportId())
-                .fpvDrone(fpvReport.getFpvDrone())
-                .dateTimeFlight(fpvReport.getDateTimeFlight())
-                .fpvPilot(fpvReport.getFpvPilot())
-                .isLostFPVDueToREB(fpvReport.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReport.getIsOnTargetFPV())
-                .coordinatesMGRS(fpvReport.getCoordinatesMGRS())
-                .additionalInfo(fpvReport.getAdditionalInfo())
+                .fpvReportId(1L)
+                .fpvDrone(fpvDroneResponse)
+                .dateTimeFlight(fpvReportRequest.getDateTimeFlight())
+                .fpvPilot(fpvPilotResponse)
+                .isLostFPVDueToREB(fpvReportRequest.getIsLostFPVDueToREB())
+                .isOnTargetFPV(fpvReportRequest.getIsOnTargetFPV())
+                .coordinatesMGRS(fpvReportRequest.getCoordinatesMGRS())
+                .additionalInfo(fpvReportRequest.getAdditionalInfo())
                 .build();
 
         fpvReportResponse1 = FPVReportResponse.builder()
-                .fpvReportId(fpvReport1.getFpvReportId())
-                .fpvDrone(fpvReport1.getFpvDrone())
-                .dateTimeFlight(fpvReport1.getDateTimeFlight())
-                .fpvPilot(fpvReport1.getFpvPilot())
-                .isLostFPVDueToREB(fpvReport1.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReport1.getIsOnTargetFPV())
-                .coordinatesMGRS(fpvReport1.getCoordinatesMGRS())
-                .additionalInfo(fpvReport1.getAdditionalInfo())
+                .fpvReportId(2L)
+                .fpvDrone(fpvDroneResponse1)
+                .dateTimeFlight(fpvReportRequest1.getDateTimeFlight())
+                .fpvPilot(fpvPilotResponse1)
+                .isLostFPVDueToREB(fpvReportRequest1.getIsLostFPVDueToREB())
+                .isOnTargetFPV(fpvReportRequest1.getIsOnTargetFPV())
+                .coordinatesMGRS(fpvReportRequest1.getCoordinatesMGRS())
+                .additionalInfo(fpvReportRequest1.getAdditionalInfo())
                 .build();
 
-        doReturn(List.of(fpvReport, fpvReport1)).when(fpvReportRestService).findAll();
+        doReturn(List.of(fpvReportResponse, fpvReportResponse1)).when(fpvReportServiceImpl).findAll();
     }
 
-    protected void givenFPVReportRestServiceDeleteFpvReportById(Long id) {
-        doNothing().when(fpvReportRestService).deleteById(id);
+    protected void givenFPVReportRestServiceDeleteByIdById(Long id) {
+        doNothing().when(fpvReportServiceImpl).deleteById(id);
     }
 
-    protected void givenFPVReportRestServiceUpdateFpvReport(Long id) {
-        fpvReport1 = getFpvReport1();
+    protected void givenFPVReportRestServiceUpdate(Long id) {
+        fpvReportRequest1 = getFpvReportRequest1();
+
+        fpvDroneResponse1 = FPVDroneResponse.builder()
+                .fpvSerialNumber(fpvReportRequest1.getFpvDrone().getFpvSerialNumber())
+                .fpvCraftName(fpvReportRequest1.getFpvDrone().getFpvCraftName())
+                .fpvModel(fpvReportRequest1.getFpvDrone().getFpvModel())
+                .build();
+
+        fpvPilotResponse1 = FPVPilotResponse.builder()
+                .name(fpvReportRequest1.getFpvPilot().getName())
+                .lastName(fpvReportRequest1.getFpvPilot().getLastName())
+                .build();
 
         fpvReportResponse1 = FPVReportResponse.builder()
-                .fpvReportId(fpvReport1.getFpvReportId())
-                .fpvDrone(fpvReport1.getFpvDrone())
-                .dateTimeFlight(fpvReport1.getDateTimeFlight())
-                .fpvPilot(fpvReport1.getFpvPilot())
-                .isLostFPVDueToREB(fpvReport1.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReport1.getIsOnTargetFPV())
-                .coordinatesMGRS(fpvReport1.getCoordinatesMGRS())
-                .additionalInfo(fpvReport1.getAdditionalInfo())
+                .fpvReportId(2L)
+                .fpvDrone(fpvDroneResponse1)
+                .dateTimeFlight(fpvReportRequest1.getDateTimeFlight())
+                .fpvPilot(fpvPilotResponse1)
+                .isLostFPVDueToREB(fpvReportRequest1.getIsLostFPVDueToREB())
+                .isOnTargetFPV(fpvReportRequest1.getIsOnTargetFPV())
+                .coordinatesMGRS(fpvReportRequest1.getCoordinatesMGRS())
+                .additionalInfo(fpvReportRequest1.getAdditionalInfo())
                 .build();
 
-        when(fpvReportRestService.updateFPVReport(eq(id), any(FPVReport.class)))
-                .thenReturn(fpvReport1);
+        when(fpvReportServiceImpl.update(eq(id), any(FPVReportRequest.class))).thenReturn(fpvReportResponse1);
     }
 
-    protected void givenFpvReportRestServiceDeleteFpvReportsByIds(List<Long> ids) {
+    protected void givenFpvReportRestServiceDeleteAllByIdsByIds(List<Long> ids) {
         fpvReportIds = new FPVReportIds();
         fpvReportIds.setFpvReportIds(ids);
-        doNothing().when(fpvReportRestService).deleteAllByIds(ids);
+        doNothing().when(fpvReportServiceImpl).deleteAllByIds(ids);
     }
 
     protected void givenFPVReportRestServiceFindAllByIdsReturnsNotFound() {
-        when(fpvReportRestService.findAll()).thenReturn(Collections.emptyList());
+        when(fpvReportServiceImpl.findAll()).thenReturn(Collections.emptyList());
     }
 
     /*
@@ -258,10 +320,10 @@ class FPVReportRestControllerTest {
                 .getResponse();
     }
 
-    protected void whenCreateFpvReportAPICalled() throws Exception {
+    protected void whenSaveFpvReportAPICalled() throws Exception {
         response = mockMvc.perform(post(FPVREPORTS_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(fpvReport)))
+                        .content(mapper.writeValueAsString(fpvReportRequest)))
                 .andDo(print())
                 .andReturn()
                 .getResponse();
@@ -270,13 +332,13 @@ class FPVReportRestControllerTest {
     protected void whenUpdatedFpvReportAPICalled(Long id) throws Exception {
         response = mockMvc.perform(put(FPVREPORTS_API_PATH + '/' + id)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(fpvReport1)))
+                        .content(mapper.writeValueAsString(fpvReportRequest1)))
                 .andDo(print())
                 .andReturn()
                 .getResponse();
     }
 
-    protected void whenDeleteFpvReportAPICalled(Long id) throws Exception {
+    protected void whenDeleteByIdAPICalled(Long id) throws Exception {
         response = mockMvc.perform(delete(FPVREPORTS_API_PATH + '/' + id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -284,9 +346,9 @@ class FPVReportRestControllerTest {
                 .getResponse();
     }
 
-    protected void whenDeleteFpvReportsByIdsAPICalled() throws Exception {
+    protected void whenDeleteAllByIdsByIdsAPICalled() throws Exception {
         response = mockMvc.perform(delete(FPVREPORTS_API_PATH)
-                .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(fpvReportIds)))
                 .andDo(print())
                 .andReturn()
@@ -325,7 +387,7 @@ class FPVReportRestControllerTest {
         assertEquals("Kolibri", actualFindAllFindFpvReportsResponse.get(1).getFpvDrone().getFpvCraftName());
     }
 
-    protected void thenExpectResponseWithOneCreatedFpvReport() throws UnsupportedEncodingException {
+    protected void thenExpectResponseWithOneSavedFpvReport() throws UnsupportedEncodingException {
         FPVReportResponse actualFindOneFPVReportResponse = stringJsonToObject(response.getContentAsString(), FPVReportResponse.class);
         assertNotNull(actualFindOneFPVReportResponse);
         assertEquals(fpvReportResponse, actualFindOneFPVReportResponse);
@@ -344,24 +406,24 @@ class FPVReportRestControllerTest {
         assertEquals(appError.getMessage(), actualResponseMessage);
     }
 
-    protected void thenExpectNoCallToFPVReportRestServiceCreateFPVReport() {
-        verify(fpvReportRestService, times(0)).save(any(FPVReport.class));
+    protected void thenExpectNoCallToFPVReportRestServiceSave() {
+        verify(fpvReportServiceImpl, times(0)).save(any(FPVReportRequest.class));
     }
 
     protected void thenExpectFpvReportServiceFindAllFpvReportsCalledOnce() {
-        verify(fpvReportRestService, times(1)).findAll();
+        verify(fpvReportServiceImpl, times(1)).findAll();
     }
 
-    protected void thenExpectFpvReportServiceCreateFpvReportCalledOnce() {
-        verify(fpvReportRestService, times(1)).save(any(FPVReport.class));
+    protected void thenExpectFpvReportServiceSaveCalledOnce() {
+        verify(fpvReportServiceImpl, times(1)).save(any(FPVReportRequest.class));
     }
 
-    protected void thenExpectFpvReportServiceDeleteFpvReportCalledOnce(Long id) {
-        verify(fpvReportRestService, times(1)).deleteById(id);
+    protected void thenExpectFpvReportServiceDeleteByIdCalledOnce(Long id) {
+        verify(fpvReportServiceImpl, times(1)).deleteById(id);
     }
 
-    protected void thenExpectFpvReportServiceDeleteFpvReportsByIdsCalledOnce(List<Long> ids) {
-        verify(fpvReportRestService, times(1)).deleteAllByIds(ids);
+    protected void thenExpectFpvReportServiceDeleteAllByIdsByIdsCalledOnce(List<Long> ids) {
+        verify(fpvReportServiceImpl, times(1)).deleteAllByIds(ids);
     }
 
     @SneakyThrows

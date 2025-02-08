@@ -12,8 +12,8 @@ public class FPVReportSuccessFlowTest extends FPVReportRestControllerTest {
     @BeforeEach
     void setUp() throws Exception {
         givenValidCreatedFpvReport();
-        givenFPVReportRestServiceCreateFPVReport();
-        whenCreateFpvReportAPICalled();
+        givenFPVReportServiceImplSave();
+        whenSaveFpvReportAPICalled();
         thenExpectResponseHasCreatedStatus();
     }
 
@@ -27,7 +27,7 @@ public class FPVReportSuccessFlowTest extends FPVReportRestControllerTest {
         givenFPVReportRestServiceFindFpvReportById(id);
         whenFindOneFpvReport(id);
         thenExpectResponseHasOkStatus();
-        thenExpectResponseWithOneCreatedFpvReport();
+        thenExpectResponseWithOneSavedFpvReport();
     }
 
     /*
@@ -36,8 +36,8 @@ public class FPVReportSuccessFlowTest extends FPVReportRestControllerTest {
 
     @Test
     public void shouldCreateFpvReportCallingRestAPI() throws Exception {
-        thenExpectFpvReportServiceCreateFpvReportCalledOnce();
-        thenExpectResponseWithOneCreatedFpvReport();
+        thenExpectFpvReportServiceSaveCalledOnce();
+        thenExpectResponseWithOneSavedFpvReport();
     }
 
     /*
@@ -47,7 +47,7 @@ public class FPVReportSuccessFlowTest extends FPVReportRestControllerTest {
     @ParameterizedTest
     @ValueSource(longs = {1L})
     public void shouldUpdateFpvReportCallingRestAPI(Long id) throws Exception {
-        givenFPVReportRestServiceUpdateFpvReport(id);
+        givenFPVReportRestServiceUpdate(id);
         whenUpdatedFpvReportAPICalled(id);
         thenExpectResponseHasOkStatus();
         thenExpectResponseWithOneUpdatedFpvReport();
@@ -60,11 +60,11 @@ public class FPVReportSuccessFlowTest extends FPVReportRestControllerTest {
     @ParameterizedTest
     @ValueSource(longs = {1L})
     public void shouldDeleteFpvReportCallingRestAPI(Long id) throws Exception {
-        givenFPVReportRestServiceDeleteFpvReportById(id);
+        givenFPVReportRestServiceDeleteByIdById(id);
         givenFPVReportRestServiceFindFpvReportById(id);
-        whenDeleteFpvReportAPICalled(id);
+        whenDeleteByIdAPICalled(id);
         thenExpectResponseHasOkStatus();
-        thenExpectFpvReportServiceDeleteFpvReportCalledOnce(id);
+        thenExpectFpvReportServiceDeleteByIdCalledOnce(id);
 
         givenFPVReportRestServiceFindByIdReturnsNotFound(id);
         whenFindOneFpvReport(id);

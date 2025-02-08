@@ -1,8 +1,8 @@
 package com.rade.protect.data;
 
-import com.rade.protect.model.request.FPVDrone;
-import com.rade.protect.model.request.FPVPilot;
-import com.rade.protect.model.request.FPVReport;
+import com.rade.protect.model.entity.FPVDrone;
+import com.rade.protect.model.entity.FPVPilot;
+import com.rade.protect.model.entity.FPVReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

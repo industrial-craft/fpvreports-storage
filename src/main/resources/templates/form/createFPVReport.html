@@ -34,7 +34,7 @@
                 <label class="details" for="fpvDrone.fpvModel">FPV Model:
                     <select class="input-box-field" id="fpvDrone.fpvModel" th:field="*{fpvDrone.fpvModel}">
                         <option value="" disabled selected>Please select a model</option>
-                        <option th:each="fpvModel : ${T(com.rade.protect.model.request.FPVDrone.FPVModel).values()}"
+                        <option th:each="fpvModel : ${T(com.rade.protect.model.entity.FPVDrone.FPVModel).values()}"
                                 th:value="${fpvModel}" th:text="${fpvModel}"></option>
                     </select>
                     <span class="validationError"

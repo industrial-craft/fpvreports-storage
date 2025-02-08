@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.rade.protect.model.request.FPVDrone;
+import com.rade.protect.model.entity.FPVDrone;
 
 import java.io.IOException;
 

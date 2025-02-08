@@ -1,6 +1,6 @@
 package com.rade.protect;
 
-import com.rade.protect.model.request.FPVDrone;
+import com.rade.protect.model.entity.FPVDrone;
 import lombok.Data;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.rade.protect.model.request;
+package com.rade.protect.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -28,16 +28,12 @@ public class FPVDrone {
     @JsonIgnore
     private Long fpvDroneId;
 
-    @NotBlank(message = "FPV Serial Number is required!")
     @Column(name = "fpvSerialNumber")
     private String fpvSerialNumber;
 
-    @NotBlank(message = "FPV Craft Name is required!")
     @Column(name = "fpvCraftName")
     private String fpvCraftName;
 
-    @NotNull(message = "FPV Model is required!")
-    @EnumNamePattern(regexp = "KAMIKAZE|BOMBER|PPO")
     @Enumerated(EnumType.STRING)
     @Column(name = "fpvModel")
     private FPVModel fpvModel;
@@ -46,8 +42,6 @@ public class FPVDrone {
     @JsonIgnore
     private FPVReport fpvReport;
 
-    @JsonSerialize(using = FPVModelSerializer.class)
-    @JsonDeserialize(using = FPVModelDeserializer.class)
     public enum FPVModel {
 
         KAMIKAZE, BOMBER, PPO;

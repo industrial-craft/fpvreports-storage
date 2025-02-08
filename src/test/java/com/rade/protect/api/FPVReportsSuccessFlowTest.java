@@ -19,7 +19,7 @@ public class FPVReportsSuccessFlowTest extends FPVReportRestControllerTest {
     @Test
     public void shouldReturnTheListOfFpvReportsRestAPI() throws Exception {
         givenValidCreatedFpvReports();
-        givenFPVReportRestServiceCreateFPVReport();
+        givenFPVReportServiceImplSave();
         givenFPVReportRestServiceGetAllFPVReportsReturnsListOfFPVReports();
         whenFindAllFpvReports();
         thenExpectResponseHasOkStatus();
@@ -35,13 +35,13 @@ public class FPVReportsSuccessFlowTest extends FPVReportRestControllerTest {
     @MethodSource("fpvReportIdsAndMessages")
     public void shouldDeleteFpvReportsByIdsCallingRestAPI(List<Long> ids, String actualResponseMessage, int actualResponseStatusCode) throws Exception {
         givenValidCreatedFpvReports();
-        givenFPVReportRestServiceCreateFPVReport();
+        givenFPVReportServiceImplSave();
         givenFPVReportRestServiceGetAllFPVReportsReturnsListOfFPVReports();
 
-        givenFpvReportRestServiceDeleteFpvReportsByIds(ids);
-        whenDeleteFpvReportsByIdsAPICalled();
+        givenFpvReportRestServiceDeleteAllByIdsByIds(ids);
+        whenDeleteAllByIdsByIdsAPICalled();
         thenExpectResponseHasOkStatus();
-        thenExpectFpvReportServiceDeleteFpvReportsByIdsCalledOnce(ids);
+        thenExpectFpvReportServiceDeleteAllByIdsByIdsCalledOnce(ids);
 
         givenFPVReportRestServiceFindAllByIdsReturnsNotFound();
         whenFindAllFpvReports();

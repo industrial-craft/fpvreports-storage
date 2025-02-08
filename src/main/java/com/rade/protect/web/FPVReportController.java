@@ -1,7 +1,9 @@
 package com.rade.protect.web;
 
-import com.rade.protect.model.request.FPVReport;
-import com.rade.protect.service.FPVReportRestService;
+import com.rade.protect.model.entity.FPVReport;
+import com.rade.protect.model.request.FPVReportRequest;
+import com.rade.protect.model.response.FPVReportResponse;
+import com.rade.protect.service.impl.FPVReportServiceImpl;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import java.util.Optional;
 public class FPVReportController {
 
     @Autowired
-    private FPVReportRestService fpvReportRestService;
+    private FPVReportServiceImpl fpvReportServiceImpl;
 
     @ModelAttribute(name = "fpvReport")
     public FPVReport fpvReport() {
@@ -36,11 +38,11 @@ public class FPVReportController {
 
     //work
     @PostMapping("/submitToCreateFPVReportForm")
-    public String submitCreateFPVReportForm(@Valid @ModelAttribute("fpvReport") FPVReport fpvReport, Errors errors, SessionStatus sessionStatus) {
+    public String submitCreateFPVReportForm(@Valid @ModelAttribute("fpvReport") FPVReportRequest fpvReportRequest, Errors errors, SessionStatus sessionStatus) {
         if (errors.hasErrors()) {
             return "form/createFPVReport";
         }
-        FPVReport savedFpvReport = fpvReportRestService.save(fpvReport);
+        FPVReportResponse savedFpvReport = fpvReportServiceImpl.save(fpvReportRequest);
         log.info("FPV report submitted: {}", savedFpvReport);
         sessionStatus.setComplete();
         return "result/success/createFPVReport_success";
@@ -56,7 +58,7 @@ public class FPVReportController {
     @PostMapping("/submitToSearchFPVReportForm")
     public String getFPVReportById(@RequestParam(name = "id") Long id, Model model) {
         log.info("Searching for report with id: {}", id);
-        Optional<FPVReport> fpvReport = fpvReportRestService.findById(id);
+        Optional<FPVReportResponse> fpvReport = fpvReportServiceImpl.findById(id);
 
         if (fpvReport.isPresent()) {
             model.addAttribute("fpvReport", fpvReport);
@@ -101,7 +103,7 @@ public class FPVReportController {
     //work
     @GetMapping("/fpvReports")
     public String deleteFPVReportsForm(Model model) {
-        model.addAttribute("fpvReports", fpvReportRestService.findAll());
+        model.addAttribute("fpvReports", fpvReportServiceImpl.findAll());
         return "form/deleteFPVReports";
     }
 
@@ -109,7 +111,7 @@ public class FPVReportController {
     @PostMapping("/submitToDeleteFPVReports")
     public String deleteFPVReportsByIds(@RequestParam(name = "ids", required = false) List<Long> ids, Model model) {
         if (ids != null && !ids.isEmpty()) {
-            fpvReportRestService.deleteAllByIds(ids);
+            fpvReportServiceImpl.deleteAllByIds(ids);
             model.addAttribute("message", "Selected FPV Reports were deleted successfully!");
         } else {
             model.addAttribute("message", "No FPV Reports selected for deletion!");
@@ -126,8 +128,8 @@ public class FPVReportController {
     //work
     @PostMapping("/submitToDeleteFPVReport")
     public String deleteFPVReportById(@RequestParam(name = "id") Long id, Model model) {
-        if (fpvReportRestService.existsById(id)) {
-            fpvReportRestService.deleteById(id);
+        if (fpvReportServiceImpl.existsById(id)) {
+            fpvReportServiceImpl.deleteById(id);
             model.addAttribute("message", "FPV Report with ID " + id + " was deleted successfully!");
         } else {
             model.addAttribute("message", "FPV Report with ID " + id + " not found!");

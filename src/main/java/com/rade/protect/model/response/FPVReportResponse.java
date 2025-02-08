@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rade.protect.api.validation.localdatetime.LocalDateTimeCustomDeserializer;
 import com.rade.protect.api.validation.localdatetime.LocalDateTimeCustomSerializer;
-import com.rade.protect.model.request.FPVDrone;
-import com.rade.protect.model.request.FPVPilot;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,21 +13,21 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class FPVReportResponse {
 
     private Long fpvReportId;
 
-    private FPVDrone fpvDrone;
+    private FPVDroneResponse fpvDrone;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonSerialize(using = LocalDateTimeCustomSerializer.class)
     @JsonDeserialize(using = LocalDateTimeCustomDeserializer.class)
     private LocalDateTime dateTimeFlight;
 
-    private FPVPilot fpvPilot;
+    private FPVPilotResponse fpvPilot;
 
     private Boolean isLostFPVDueToREB;
 

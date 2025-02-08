@@ -1,7 +1,7 @@
 package com.rade.protect.data;
 
-import com.rade.protect.model.request.FPVDrone;
-import com.rade.protect.model.request.FPVReport;
+import com.rade.protect.model.entity.FPVDrone;
+import com.rade.protect.model.entity.FPVReport;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 

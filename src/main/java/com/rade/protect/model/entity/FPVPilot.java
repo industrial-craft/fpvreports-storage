@@ -1,17 +1,14 @@
-package com.rade.protect.model.request;
+package com.rade.protect.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @Table(name = "FPV_Pilot")
 public class FPVPilot {
@@ -22,11 +19,9 @@ public class FPVPilot {
     @Column(name = "fpvPilotId")
     private Long fpvPilotId;
 
-    @NotBlank(message = "FPV pilot name is required!")
     @Column(name = "name")
     private String name;
 
-    @NotBlank(message = "FPV pilot lastname is required!")
     @Column(name = "lastName")
     private String lastName;
 

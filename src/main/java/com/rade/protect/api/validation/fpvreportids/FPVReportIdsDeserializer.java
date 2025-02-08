@@ -23,12 +23,12 @@ public class FPVReportIdsDeserializer extends StdDeserializer<List<Long>> {
 
     @Override
     public List<Long> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonMappingException {
-        List<?> rawIds = p.readValueAs(List.class); // Читаємо JSON як List<?>
+        List<?> rawIds = p.readValueAs(List.class);
 
         return rawIds.stream()
                 .map(obj -> {
                     if (obj instanceof Number) {
-                        return ((Number) obj).longValue(); // Якщо число → конвертуємо
+                        return ((Number) obj).longValue();
                     } else if (obj instanceof String) {
                         try {
                             return parseLong((String) obj);

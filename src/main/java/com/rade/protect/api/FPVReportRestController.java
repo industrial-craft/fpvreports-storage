@@ -2,9 +2,10 @@ package com.rade.protect.api;
 
 import com.rade.protect.api.validation.exception.FPVReportNotFoundException;
 import com.rade.protect.api.validation.fpvserialnumber.UniqueFpvSerialNumber;
-import com.rade.protect.model.request.FPVReport;
 import com.rade.protect.model.request.FPVReportIds;
-import com.rade.protect.service.FPVReportRestService;
+import com.rade.protect.model.request.FPVReportRequest;
+import com.rade.protect.model.response.FPVReportResponse;
+import com.rade.protect.service.impl.FPVReportServiceImpl;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,72 +25,61 @@ import java.util.List;
 public class FPVReportRestController {
 
     @Autowired
-    private FPVReportRestService fpvReportRestService;
+    private FPVReportServiceImpl fpvReportServiceImpl;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findByIdFpvReport(@PathVariable Long id) {
-/*        try {
-            FPVReport fpvReport = fpvReportRestService.findById(id)
-                    .orElseThrow(() -> new FPVReportNotFoundException("FPV Report with id - " + id + " is not found!"));
-            return ResponseEntity.ok(fpvReport);
-        } catch (FPVReportNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppError(HttpStatus.NOT_FOUND.value(), "FPV Report with id - " + id + " is not found!"));
-        }*/
-        FPVReport fpvReport = fpvReportRestService.findById(id)
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        FPVReportResponse fpvReportResponse = fpvReportServiceImpl.findById(id)
                 .orElseThrow(() -> new FPVReportNotFoundException("FPV Report with id - " + id + " is not found!"));
-        return ResponseEntity.ok(fpvReport);
+        return ResponseEntity.ok(fpvReportResponse);
 
     }
 
     @GetMapping
     public ResponseEntity<?> findAll() {
-        List<FPVReport> fpvReports = fpvReportRestService.findAll();
-        if (fpvReports.isEmpty()) {
+        List<FPVReportResponse> fpvReportsResponse = fpvReportServiceImpl.findAll();
+        if (fpvReportsResponse.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(new AppError(HttpStatus.OK.value(), "No FPVReports are available!"));
         }
-        return ResponseEntity.ok(fpvReports);
+        return ResponseEntity.ok(fpvReportsResponse);
     }
 
     @PostMapping
-    public ResponseEntity<FPVReport> createFpvReport(@Valid @RequestBody @UniqueFpvSerialNumber FPVReport fpvReport) {
-        log.info("Received FPV Report: {}", fpvReport);
-
-        FPVReport savedFpvReport = fpvReportRestService.save(fpvReport);
-
-        log.info("Saved FPV Report: {}", savedFpvReport);
+    public ResponseEntity<FPVReportResponse> save(@Valid @RequestBody @UniqueFpvSerialNumber FPVReportRequest fpvReportRequest) {
+        FPVReportResponse fpvReportResponse  = fpvReportServiceImpl.save(fpvReportRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .buildAndExpand(savedFpvReport)
+                .buildAndExpand()
                 .toUri();
 
-        return ResponseEntity.created(location).body(savedFpvReport);
+        return ResponseEntity.created(location).body(fpvReportResponse);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> updateFPVReport(@Valid @RequestBody FPVReport fpvReport, @PathVariable Long id) {
-        FPVReport updatedFPVReport = fpvReportRestService.updateFPVReport(id, fpvReport);
-        if (updatedFPVReport == null) {
+    ResponseEntity<?> update(@Valid @RequestBody FPVReportRequest fpvReportRequest, @PathVariable Long id) {
+        FPVReportResponse updatedFPVReportResponse = fpvReportServiceImpl.update(id, fpvReportRequest);
+        if (updatedFPVReportResponse == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new AppError(HttpStatus.NOT_FOUND.value(), "FPV Report with id - " + id + " is not found!"));
         }
-        return ResponseEntity.ok(updatedFPVReport);
+        return ResponseEntity.ok(updatedFPVReportResponse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteFPVReport(@PathVariable Long id) {
-        fpvReportRestService.deleteById(id);
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        fpvReportServiceImpl.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body(new AppError(HttpStatus.OK.value(), "FPVReports with ID: " + id + " are successfully deleted!"));
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteFPVReports(@Valid @RequestBody FPVReportIds fpvReportIds) {
+    public ResponseEntity<?> deleteAllByIds(@Valid @RequestBody FPVReportIds fpvReportIds) {
         List<Long> ids = fpvReportIds.getFpvReportIds();
         if (ids == null || ids.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new AppError(HttpStatus.BAD_REQUEST.value(), "No FPVReport IDs provided!"));
         }
-        fpvReportRestService.deleteAllByIds(ids);
+        fpvReportServiceImpl.deleteAllByIds(ids);
         return ResponseEntity.status(HttpStatus.OK).body(new AppError(HttpStatus.OK.value(), "FPVReports with IDs: " + ids + " are successfully deleted!"));
     }
 
