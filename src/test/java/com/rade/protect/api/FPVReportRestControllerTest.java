@@ -136,8 +136,8 @@ class FPVReportRestControllerTest {
                 .fpvDrone(fpvDroneResponse)
                 .dateTimeFlight(fpvReportRequest.getDateTimeFlight())
                 .fpvPilot(fpvPilotResponse)
-                .isLostFPVDueToREB(fpvReportRequest.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReportRequest.getIsOnTargetFPV())
+                .isLostFPVDueToREB(fpvReportRequest.isLostFPVDueToREB())
+                .isOnTargetFPV(fpvReportRequest.isOnTargetFPV())
                 .coordinatesMGRS(fpvReportRequest.getCoordinatesMGRS())
                 .additionalInfo(fpvReportRequest.getAdditionalInfo())
                 .build();
@@ -238,8 +238,8 @@ class FPVReportRestControllerTest {
                 .fpvDrone(fpvDroneResponse)
                 .dateTimeFlight(fpvReportRequest.getDateTimeFlight())
                 .fpvPilot(fpvPilotResponse)
-                .isLostFPVDueToREB(fpvReportRequest.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReportRequest.getIsOnTargetFPV())
+                .isLostFPVDueToREB(fpvReportRequest.isLostFPVDueToREB())
+                .isOnTargetFPV(fpvReportRequest.isOnTargetFPV())
                 .coordinatesMGRS(fpvReportRequest.getCoordinatesMGRS())
                 .additionalInfo(fpvReportRequest.getAdditionalInfo())
                 .build();
@@ -249,8 +249,8 @@ class FPVReportRestControllerTest {
                 .fpvDrone(fpvDroneResponse1)
                 .dateTimeFlight(fpvReportRequest1.getDateTimeFlight())
                 .fpvPilot(fpvPilotResponse1)
-                .isLostFPVDueToREB(fpvReportRequest1.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReportRequest1.getIsOnTargetFPV())
+                .isLostFPVDueToREB(fpvReportRequest1.isLostFPVDueToREB())
+                .isOnTargetFPV(fpvReportRequest1.isOnTargetFPV())
                 .coordinatesMGRS(fpvReportRequest1.getCoordinatesMGRS())
                 .additionalInfo(fpvReportRequest1.getAdditionalInfo())
                 .build();
@@ -281,8 +281,8 @@ class FPVReportRestControllerTest {
                 .fpvDrone(fpvDroneResponse1)
                 .dateTimeFlight(fpvReportRequest1.getDateTimeFlight())
                 .fpvPilot(fpvPilotResponse1)
-                .isLostFPVDueToREB(fpvReportRequest1.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReportRequest1.getIsOnTargetFPV())
+                .isLostFPVDueToREB(fpvReportRequest1.isLostFPVDueToREB())
+                .isOnTargetFPV(fpvReportRequest1.isOnTargetFPV())
                 .coordinatesMGRS(fpvReportRequest1.getCoordinatesMGRS())
                 .additionalInfo(fpvReportRequest1.getAdditionalInfo())
                 .build();

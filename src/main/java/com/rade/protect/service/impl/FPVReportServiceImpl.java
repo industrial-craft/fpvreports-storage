@@ -60,8 +60,8 @@ public class FPVReportServiceImpl implements FPVReportService {
         existingFpvReport.setFpvDrone(fpvDroneService.mapToFPVDroneEntity(fpvReportRequest.getFpvDrone()));
         existingFpvReport.setFpvPilot(fpvPilotService.mapToFPVPilotEntity(fpvReportRequest.getFpvPilot()));
         existingFpvReport.setDateTimeFlight(fpvReportRequest.getDateTimeFlight());
-        existingFpvReport.setIsLostFPVDueToREB(fpvReportRequest.getIsLostFPVDueToREB());
-        existingFpvReport.setIsOnTargetFPV(fpvReportRequest.getIsOnTargetFPV());
+        existingFpvReport.setLostFPVDueToREB(fpvReportRequest.isLostFPVDueToREB());
+        existingFpvReport.setOnTargetFPV(fpvReportRequest.isOnTargetFPV());
         existingFpvReport.setCoordinatesMGRS(fpvReportRequest.getCoordinatesMGRS());
         existingFpvReport.setAdditionalInfo(fpvReportRequest.getAdditionalInfo());
 
@@ -101,8 +101,8 @@ public class FPVReportServiceImpl implements FPVReportService {
                 .fpvDrone(fpvDroneService.mapToFPVDroneEntity(request.getFpvDrone()))
                 .fpvPilot(fpvPilotService.mapToFPVPilotEntity(request.getFpvPilot()))
                 .dateTimeFlight(request.getDateTimeFlight())
-                .isLostFPVDueToREB(request.getIsLostFPVDueToREB())
-                .isOnTargetFPV(request.getIsOnTargetFPV())
+                .isLostFPVDueToREB(request.isLostFPVDueToREB())
+                .isOnTargetFPV(request.isOnTargetFPV())
                 .coordinatesMGRS(request.getCoordinatesMGRS())
                 .additionalInfo(request.getAdditionalInfo())
                 .build();
@@ -114,8 +114,8 @@ public class FPVReportServiceImpl implements FPVReportService {
                 .fpvDrone(fpvDroneService.mapToFPVDroneResponse(fpvReport.getFpvDrone()))
                 .fpvPilot(fpvPilotService.mapToFPVDroneResponse(fpvReport.getFpvPilot()))
                 .dateTimeFlight(fpvReport.getDateTimeFlight())
-                .isLostFPVDueToREB(fpvReport.getIsLostFPVDueToREB())
-                .isOnTargetFPV(fpvReport.getIsOnTargetFPV())
+                .isLostFPVDueToREB(fpvReport.isLostFPVDueToREB())
+                .isOnTargetFPV(fpvReport.isOnTargetFPV())
                 .coordinatesMGRS(fpvReport.getCoordinatesMGRS())
                 .additionalInfo(fpvReport.getAdditionalInfo())
                 .build();

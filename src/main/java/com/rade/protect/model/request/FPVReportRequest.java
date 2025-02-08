@@ -38,9 +38,9 @@ public class FPVReportRequest {
     @NotNull(message = "FPVPilot object can't be null!")
     private FPVPilotRequest fpvPilot;
 
-    private Boolean isLostFPVDueToREB;
+    private boolean isLostFPVDueToREB;
 
-    private Boolean isOnTargetFPV;
+    private boolean isOnTargetFPV;
 
     @NotBlank(message = "Сoordinates MRGS are required!")
     private String coordinatesMGRS;

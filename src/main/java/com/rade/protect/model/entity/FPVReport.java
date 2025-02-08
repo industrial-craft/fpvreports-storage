@@ -33,10 +33,10 @@ public class FPVReport implements Serializable {
     private FPVPilot fpvPilot;
 
     @Column(name = "isLostFPVDueToREB")
-    private Boolean isLostFPVDueToREB;
+    private boolean isLostFPVDueToREB;
 
     @Column(name = "isOnTargetFPV")
-    private Boolean isOnTargetFPV;
+    private boolean isOnTargetFPV;
 
     @Column(name = "coordinatesMGRS")
     private String coordinatesMGRS;

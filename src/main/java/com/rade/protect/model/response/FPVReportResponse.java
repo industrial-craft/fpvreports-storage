@@ -29,9 +29,9 @@ public class FPVReportResponse {
 
     private FPVPilotResponse fpvPilot;
 
-    private Boolean isLostFPVDueToREB;
+    private boolean isLostFPVDueToREB;
 
-    private Boolean isOnTargetFPV;
+    private boolean isOnTargetFPV;
 
     private String coordinatesMGRS;
 

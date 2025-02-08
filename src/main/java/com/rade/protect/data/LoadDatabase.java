@@ -34,8 +34,8 @@ public class LoadDatabase implements CommandLineRunner {
         report1.setFpvDrone(drone1);
         report1.setFpvPilot(pilot1);
         report1.setDateTimeFlight(LocalDateTime.of(2023, 11, 1, 14, 0));
-        report1.setIsLostFPVDueToREB(false);
-        report1.setIsOnTargetFPV(true);
+        report1.setLostFPVDueToREB(false);
+        report1.setOnTargetFPV(true);
         report1.setCoordinatesMGRS("38SMB448134");
         report1.setAdditionalInfo("Successful mission");
 
