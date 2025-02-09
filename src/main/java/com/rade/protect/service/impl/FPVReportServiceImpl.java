@@ -39,8 +39,7 @@ public class FPVReportServiceImpl implements FPVReportService {
     }
 
     public List<FPVReportResponse> findAll() {
-        List<FPVReport> fpvReports = new ArrayList<>();
-        fpvReportRepository.findAll().forEach(fpvReports::add);
+        List<FPVReport> fpvReports = new ArrayList<>(fpvReportRepository.findAll());
         return fpvReports.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());

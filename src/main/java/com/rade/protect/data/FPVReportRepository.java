@@ -2,14 +2,16 @@ package com.rade.protect.data;
 
 import com.rade.protect.model.entity.FPVDrone;
 import com.rade.protect.model.entity.FPVReport;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
+import io.micrometer.common.lang.NonNull;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface FPVReportRepository extends CrudRepository<FPVReport, Long> {
+public interface FPVReportRepository extends JpaRepository<FPVReport, Long> {
 
-    List<FPVReport> findAll(Sort sort);
+    @Override
+    @NonNull
+    List<FPVReport> findAll();
 
     List<FPVReport> findAllByFpvDrone_FpvModel(FPVDrone.FPVModel fpvModel);
 
