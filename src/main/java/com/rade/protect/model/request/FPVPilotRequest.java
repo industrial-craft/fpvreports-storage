@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FPVPilotRequest {
 
-    @NotBlank(message = "FPV pilot name is required!")
-    private String name;
+    @NotBlank(message = "FPV pilot firstname is required!")
+    private String firstname;
 
     @NotBlank(message = "FPV pilot lastname is required!")
-    private String lastName;
+    private String lastname;
 
 }

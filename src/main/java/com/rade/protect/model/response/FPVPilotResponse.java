@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FPVPilotResponse {
 
-    String name;
+    private String firstname;
 
-    String lastName;
+    private String lastname;
 
 }

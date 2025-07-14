@@ -1,6 +1,7 @@
 package com.rade.protect.service;
 
-import com.rade.protect.model.request.FPVReportRequest;
+import com.rade.protect.model.request.FPVReportCreateRequest;
+import com.rade.protect.model.request.FPVReportUpdateRequest;
 import com.rade.protect.model.response.FPVReportResponse;
 
 import java.util.List;
@@ -14,9 +15,9 @@ public interface FPVReportService {
 
     List<FPVReportResponse> findAll();
 
-    FPVReportResponse save(FPVReportRequest fpvReportRequest);
+    FPVReportResponse save(FPVReportCreateRequest fpvReportCreateRequest);
 
-    FPVReportResponse update(Long id, FPVReportRequest updatedReportRequest);
+    FPVReportResponse update(Long id, FPVReportUpdateRequest fpvReportUpdateRequest);
 
     void deleteById(Long id);
 

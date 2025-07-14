@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@Table(name = "FPV_Report")
+@Table(name = "Fpv_Report")
 public class FPVReport implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,8 +29,8 @@ public class FPVReport implements Serializable {
     @Column(name = "dateTimeFlight")
     private LocalDateTime dateTimeFlight;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fpvPilot_id", referencedColumnName = "fpvPilotId")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fpvPilot_id", referencedColumnName = "fpvPilotId", nullable = false)
     private FPVPilot fpvPilot;
 
     @Column(name = "isLostFPVDueToREB")
@@ -43,5 +44,18 @@ public class FPVReport implements Serializable {
 
     @Column(name = "additionalInfo")
     private String additionalInfo;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FPVReport fpvReport)) return false;
+        if (this.fpvReportId == null || fpvReport.fpvReportId == null) return false;
+        return this.fpvReportId.equals(fpvReport.fpvReportId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fpvReportId);
+    }
 
 }

@@ -1,8 +1,26 @@
 package com.rade.protect.data;
 
 import com.rade.protect.model.entity.FPVPilot;
-import org.springframework.data.repository.CrudRepository;
+import io.micrometer.common.lang.NonNull;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface FPVPilotRepository extends CrudRepository<FPVPilot, Long> {
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface FPVPilotRepository extends JpaRepository<FPVPilot, Long> {
+
+    @Override
+    @NonNull
+    Optional<FPVPilot> findById(Long id);
+
+    Optional<FPVPilot> findByUsername(String username);
+
+    Optional<FPVPilot> findByFirstname(String firstname);
+
+    @Override
+    @NonNull
+    List<FPVPilot> findAll();
 
 }

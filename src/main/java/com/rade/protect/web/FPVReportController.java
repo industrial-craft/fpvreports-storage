@@ -1,7 +1,7 @@
 package com.rade.protect.web;
 
 import com.rade.protect.model.entity.FPVReport;
-import com.rade.protect.model.request.FPVReportRequest;
+import com.rade.protect.model.request.FPVReportCreateRequest;
 import com.rade.protect.model.response.FPVReportResponse;
 import com.rade.protect.service.impl.FPVReportServiceImpl;
 import jakarta.validation.Valid;
@@ -38,11 +38,11 @@ public class FPVReportController {
 
     //work
     @PostMapping("/submitToCreateFPVReportForm")
-    public String submitCreateFPVReportForm(@Valid @ModelAttribute("fpvReport") FPVReportRequest fpvReportRequest, Errors errors, SessionStatus sessionStatus) {
+    public String submitCreateFPVReportForm(@Valid @ModelAttribute("fpvReport") FPVReportCreateRequest fpvReportCreateRequest, Errors errors, SessionStatus sessionStatus) {
         if (errors.hasErrors()) {
             return "form/createFPVReport";
         }
-        FPVReportResponse savedFpvReport = fpvReportServiceImpl.save(fpvReportRequest);
+        FPVReportResponse savedFpvReport = fpvReportServiceImpl.save(fpvReportCreateRequest);
         log.info("FPV report submitted: {}", savedFpvReport);
         sessionStatus.setComplete();
         return "result/success/createFPVReport_success";
